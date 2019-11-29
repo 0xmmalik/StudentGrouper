@@ -49,6 +49,34 @@ public class Logic
 		});
 	}
 	
+	public static void deselectAll(JButton desAll)
+	{
+		desAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				for(JCheckBox tick : ticks)
+				{
+					if(tick.isSelected())
+						tick.setSelected(false);
+				}
+			}
+		});
+	}
+	
+	public static void selectAll(JButton desAll)
+	{
+		desAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				for(JCheckBox tick : ticks)
+				{
+					if(!tick.isSelected())
+						tick.setSelected(true);
+				}
+			}
+		});
+	}
+	
 	public static void saveStudentList(JButton btnSave, JPanel contentPane, JTextPane txtpnOneStudentPer)
 	{
 		/**
@@ -168,5 +196,20 @@ public class Logic
 			}
 		}
 		return tickedTicks;
+	}
+
+	public static void toggleSelect(JButton togSel) {
+		togSel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				for(JCheckBox tick : ticks)
+				{
+					if(tick.isSelected())
+						tick.setSelected(false);
+					else
+						tick.setSelected(true);
+				}
+			}
+		});
 	}
 }
