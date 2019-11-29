@@ -4,12 +4,12 @@ import java.awt.EventQueue;
 
 import components.GUI;
 
-public class Runner
+public class StudentGrouper
 {
 	/**
 	 * Launches the StudentGrouper interface.
 	 */
-	public static void main(String...strings) {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
