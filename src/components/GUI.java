@@ -10,7 +10,6 @@ package components;
  */
 
 import java.awt.Font;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -27,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
 public class GUI extends JFrame {
@@ -196,14 +196,25 @@ public class GUI extends JFrame {
 		gbc_btnLoad.gridx = 0;
 		gbc_btnLoad.gridy = 1;
 		panel_1.add(btnLoad, gbc_btnLoad);
-
-		setListeners(btnSetStudentList, verticalBox, txtpnOneStudentPer, btnSave, contentPane, btnLoad, btnMakeGroupsOf, spinner, groups, btnSelectRandomStudents, randStudent, desAll, selAll, togSel);
 		
 		JPanel advSet = new JPanel();
+		advSet.setLayout(gbl_panel_1);
 		tabbedPane.addTab("Advanced Settings", null, advSet, null);
-		JLabel comingsoon = new JLabel("Coming Soon!");
-		comingsoon.setFont(new Font("Herculanum", Font.PLAIN, 50));
-		advSet.add(comingsoon);
+		//JLabel comingsoon = new JLabel("Coming Soon!");
+		//comingsoon.setFont(new Font("Herculanum", Font.PLAIN, 50));
+		//advSet.add(comingsoon);
+		JToggleButton numGroups = new JToggleButton("Select based on students per group.");
+		JLabel numGroupsLbl =  new JLabel("Selection method:");
+		GridBagConstraints gbc_numGroups = new GridBagConstraints();
+		gbc_numGroups.gridx = 1;
+		gbc_numGroups.gridy = 0;
+		GridBagConstraints gbc_numGroupsLbl = new GridBagConstraints();
+		gbc_numGroupsLbl.gridx = 0;
+		gbc_numGroupsLbl.gridy = 0;
+		setListeners(btnSetStudentList, verticalBox, txtpnOneStudentPer, btnSave, contentPane, btnLoad, btnMakeGroupsOf, spinner, groups, btnSelectRandomStudents, randStudent, desAll, selAll, togSel, numGroups, lblStudentsPerGroup);
+	
+		advSet.add(numGroups, gbc_numGroups);
+		advSet.add(numGroupsLbl, gbc_numGroupsLbl);
 	}
 	
 	private void setListeners(
@@ -220,7 +231,9 @@ public class GUI extends JFrame {
 			JLabel randStudent,
 			JButton desAll,
 			JButton selAll,
-			JButton togSel)
+			JButton togSel,
+			JToggleButton numGroups,
+			JLabel lblStudentsPerGroup)
 	{
 		// Listener for setting student list button.
 		Logic.setStudentList(btnSetStudentList, verticalBox, txtpnOneStudentPer);
@@ -232,7 +245,7 @@ public class GUI extends JFrame {
 		Logic.loadStudentList(btnLoad, contentPane, txtpnOneStudentPer);
 		
 		// Listener for make groups button.
-		Logic.makeGroups(btnMakeGroupsOf, spinner, groups);
+		Logic.makeGroups(btnMakeGroupsOf, spinner, groups, numGroups);
 		
 		// Listener for select student button.
 		Logic.selectStudent(btnSelectRandomStudents, randStudent);
@@ -245,5 +258,8 @@ public class GUI extends JFrame {
 		
 		// Listener for toggle select.
 		Logic.toggleSelect(togSel);
+		
+		// Listener for toggle selection method.
+		Logic.selectMethod(numGroups, lblStudentsPerGroup);
 	}
 }
