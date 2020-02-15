@@ -8,6 +8,7 @@ package components;
  * Used to generate random groups of
  * certain students and select a random
  * student from the class.
+ * 
  */
 
 import java.awt.Font;
@@ -198,8 +199,14 @@ public class GUI extends JFrame {
 		gbc_btnLoad.gridy = 1;
 		panel_1.add(btnLoad, gbc_btnLoad);
 		
+		
 		JPanel advSet = new JPanel();
-		advSet.setLayout(gbl_panel_1);
+		GridBagLayout gbl_panel_2 = new GridBagLayout();
+		gbl_panel_2.columnWidths = new int[]{75, 0};
+		gbl_panel_2.rowHeights = new int[]{29, 0, 0};
+		gbl_panel_2.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		advSet.setLayout(gbl_panel_2);
 		tabbedPane.addTab("Advanced Settings", null, advSet, null);
 		//JLabel comingsoon = new JLabel("Coming Soon!");
 		//comingsoon.setFont(new Font("Herculanum", Font.PLAIN, 50));
