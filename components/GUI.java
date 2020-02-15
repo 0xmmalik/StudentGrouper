@@ -9,12 +9,12 @@ package components;
  * student from the class.
  */
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -26,10 +26,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
 public class GUI extends JFrame {
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -60,17 +61,54 @@ public class GUI extends JFrame {
 		tabbedPane.addTab("Enter Students", null, scrollPane, null);
 		
 		JTextPane txtpnOneStudentPer = new JTextPane();
-		txtpnOneStudentPer.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		txtpnOneStudentPer.setText("One student per line...");
+		txtpnOneStudentPer.setToolTipText("one student per line");
+		txtpnOneStudentPer.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		scrollPane.setViewportView(txtpnOneStudentPer);
 		
 		JButton btnSetStudentList = new JButton("Set Student List");
 		
 		JPanel selStu = new JPanel();
+		GridBagLayout gbl_selStu = new GridBagLayout();
+		gbl_selStu.columnWidths = new int[]{0, 0, 0};
+		gbl_selStu.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_selStu.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_selStu.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		selStu.setLayout(gbl_selStu);
+		
 		JScrollPane scroll = new JScrollPane(selStu);
 		
+		JButton desAll = new JButton("Deselect All");
+		JButton selAll = new JButton("Select All");
+		JButton togSel = new JButton("Toggle Select");
+		
+		GridBagConstraints gbc_desAll = new GridBagConstraints();
+		gbc_desAll.insets = new Insets(0, 0, 5, 0);
+		gbc_desAll.anchor = GridBagConstraints.NORTHWEST;
+		gbc_desAll.gridx = 0;
+		gbc_desAll.gridy = 0;
+		selStu.add(desAll, gbc_desAll);
+		
+		GridBagConstraints gbc_selAll = new GridBagConstraints();
+		gbc_selAll.insets = new Insets(0, 0, 5, 0);
+		gbc_selAll.anchor = GridBagConstraints.NORTHEAST;
+		gbc_selAll.gridx = 0;
+		gbc_selAll.gridy = 0;
+		selStu.add(selAll, gbc_selAll);
+		
+		GridBagConstraints gbc_togSel = new GridBagConstraints();
+		gbc_togSel.insets = new Insets(0, 0, 5, 0);
+		gbc_togSel.anchor = GridBagConstraints.NORTH;
+		gbc_togSel.gridx = 0;
+		gbc_togSel.gridy = 0;
+		selStu.add(togSel, gbc_togSel);
+		
 		Box verticalBox = Box.createVerticalBox();
-		selStu.add(verticalBox);
+		GridBagConstraints gbc_verticalBox = new GridBagConstraints();
+		gbc_verticalBox.insets = new Insets(0, 0, 5, 0);
+		gbc_verticalBox.gridx = 0;
+		gbc_verticalBox.gridy = 1;
+		selStu.add(verticalBox, gbc_verticalBox);
 		tabbedPane.addTab("Select Students", null, scroll, null);
 		btnSetStudentList.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		scrollPane.setColumnHeaderView(btnSetStudentList);
@@ -158,8 +196,25 @@ public class GUI extends JFrame {
 		gbc_btnLoad.gridx = 0;
 		gbc_btnLoad.gridy = 1;
 		panel_1.add(btnLoad, gbc_btnLoad);
-
-		setListeners(btnSetStudentList, verticalBox, txtpnOneStudentPer, btnSave, contentPane, btnLoad, btnMakeGroupsOf, spinner, groups, btnSelectRandomStudents, randStudent);
+		
+		JPanel advSet = new JPanel();
+		advSet.setLayout(gbl_panel_1);
+		tabbedPane.addTab("Advanced Settings", null, advSet, null);
+		//JLabel comingsoon = new JLabel("Coming Soon!");
+		//comingsoon.setFont(new Font("Herculanum", Font.PLAIN, 50));
+		//advSet.add(comingsoon);
+		JToggleButton numGroups = new JToggleButton("Select based on students per group.");
+		JLabel numGroupsLbl =  new JLabel("Selection method:");
+		GridBagConstraints gbc_numGroups = new GridBagConstraints();
+		gbc_numGroups.gridx = 1;
+		gbc_numGroups.gridy = 0;
+		GridBagConstraints gbc_numGroupsLbl = new GridBagConstraints();
+		gbc_numGroupsLbl.gridx = 0;
+		gbc_numGroupsLbl.gridy = 0;
+		setListeners(btnSetStudentList, verticalBox, txtpnOneStudentPer, btnSave, contentPane, btnLoad, btnMakeGroupsOf, spinner, groups, btnSelectRandomStudents, randStudent, desAll, selAll, togSel, numGroups, lblStudentsPerGroup);
+	
+		advSet.add(numGroups, gbc_numGroups);
+		advSet.add(numGroupsLbl, gbc_numGroupsLbl);
 	}
 	
 	private void setListeners(
@@ -173,7 +228,12 @@ public class GUI extends JFrame {
 			JSpinner spinner, 
 			DefaultListModel<String> groups,
 			JButton btnSelectRandomStudents, 
-			JLabel randStudent)
+			JLabel randStudent,
+			JButton desAll,
+			JButton selAll,
+			JButton togSel,
+			JToggleButton numGroups,
+			JLabel lblStudentsPerGroup)
 	{
 		// Listener for setting student list button.
 		Logic.setStudentList(btnSetStudentList, verticalBox, txtpnOneStudentPer);
@@ -185,9 +245,21 @@ public class GUI extends JFrame {
 		Logic.loadStudentList(btnLoad, contentPane, txtpnOneStudentPer);
 		
 		// Listener for make groups button.
-		Logic.makeGroups(btnMakeGroupsOf, spinner, groups);
+		Logic.makeGroups(btnMakeGroupsOf, spinner, groups, numGroups);
 		
 		// Listener for select student button.
 		Logic.selectStudent(btnSelectRandomStudents, randStudent);
+		
+		// Listener for deselect all button.
+		Logic.deselectAll(desAll);
+		
+		// Listener for select all button.
+		Logic.selectAll(selAll);
+		
+		// Listener for toggle select.
+		Logic.toggleSelect(togSel);
+		
+		// Listener for toggle selection method.
+		Logic.selectMethod(numGroups, lblStudentsPerGroup);
 	}
 }

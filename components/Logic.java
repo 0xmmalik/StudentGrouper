@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextPane;
+import javax.swing.JToggleButton;
 
 public class Logic
 {
@@ -44,6 +45,34 @@ public class Logic
 					verticalBox.add(newCheck);
 					newCheck.setSelected(true);
 					ticks.add(newCheck);
+				}
+			}
+		});
+	}
+	
+	public static void deselectAll(JButton desAll)
+	{
+		desAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				for(JCheckBox tick : ticks)
+				{
+					if(tick.isSelected())
+						tick.setSelected(false);
+				}
+			}
+		});
+	}
+	
+	public static void selectAll(JButton desAll)
+	{
+		desAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				for(JCheckBox tick : ticks)
+				{
+					if(!tick.isSelected())
+						tick.setSelected(true);
 				}
 			}
 		});
@@ -101,7 +130,7 @@ public class Logic
 		});
 	}
 	
-	public static void makeGroups(JButton btnMakeGroupsOf, JSpinner spinner, DefaultListModel<String> groups)
+	public static void makeGroups(JButton btnMakeGroupsOf, JSpinner spinner, DefaultListModel<String> groups, JToggleButton numGroups)
 	{
 		/**
 		 * Makes random groups of students.
@@ -109,30 +138,53 @@ public class Logic
 		btnMakeGroupsOf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				if((Integer)spinner.getValue() > 1 && (Integer)spinner.getValue() < 10)
+				if((int)spinner.getValue() > 1 && (int)spinner.getValue() < 10)
 				{
 					groups.removeAllElements(); // clear all groups
-					Logic logic = new Logic();
-					List<JCheckBox> tickedTicks = logic.getTicked(ticks);
-					int groupCt = tickedTicks.size()/(Integer)spinner.getValue();
-					for(int k = 0; k < groupCt; k++)
+					List<JCheckBox> tickedTicks = getTicked(ticks);
+					if(!numGroups.isSelected())
 					{
-						String groupStr = "";
-						for(int i = 0; i < (Integer)spinner.getValue(); i++)
+						int groupCt = tickedTicks.size()/(int)spinner.getValue();
+						for(int k = 0; k < groupCt; k++)
 						{
-							JCheckBox studentGroup = tickedTicks.get((int)(Math.random()*tickedTicks.size()));
-							groupStr += studentGroup.getText() + " | ";
-							tickedTicks.remove(studentGroup);
+							String groupStr = "";
+							for(int i = 0; i < (int)spinner.getValue(); i++)
+							{
+								JCheckBox studentGroup = tickedTicks.get((int)(Math.random()*tickedTicks.size()));
+								groupStr += studentGroup.getText() + " | ";
+								tickedTicks.remove(studentGroup);
+							}
+							groups.add(0, groupStr);
 						}
-						groups.add(0, groupStr);
+						// place remaining students into separate group
+						String remainGroup = "";
+						for(JCheckBox tickLeft : tickedTicks)
+						{
+							remainGroup += tickLeft.getText() + " | ";
+						}
+						groups.add(0, remainGroup);
 					}
-					// place remaining students into separate group
-					String remainGroup = "";
-					for(JCheckBox tickLeft : tickedTicks)
+					else if((int)spinner.getValue() < tickedTicks.size())
 					{
-						remainGroup += tickLeft.getText() + " | ";
+						int stPerGroup = tickedTicks.size()/(int)spinner.getValue();
+						for(int k = 0; k < (int)spinner.getValue(); k++)
+						{
+							String groupStr = "";
+							for(int i = 0; i < stPerGroup; i++)
+							{
+								JCheckBox studentGroup = tickedTicks.get((int)(Math.random()*tickedTicks.size()));
+								groupStr += studentGroup.getText() + " | ";
+								tickedTicks.remove(studentGroup);
+							}
+							groups.add(0, groupStr);
+						}
+						String remainGroup = "";
+						for(JCheckBox tickLeft : tickedTicks)
+						{
+							remainGroup += tickLeft.getText() + " | ";
+						}
+						groups.add(0, remainGroup);
 					}
-					groups.add(0, remainGroup);
 				}
 			}
 		});
@@ -146,18 +198,13 @@ public class Logic
 		btnSelectRandomStudents.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				boolean ticked = false;
-				while(!ticked)
-				{
-					JCheckBox randtick = ticks.get((int)(Math.random()*ticks.size()));
-					ticked = randtick.isSelected();
-					randStudent.setText(randtick.getText());
-				}
+				List<JCheckBox> ticked = getTicked(ticks);
+				randStudent.setText(ticked.get((int)(Math.random() * ticked.size())).getText());
 			}
 		});
 	}
 	
-	public List<JCheckBox> getTicked(List<JCheckBox> ticks)
+	public static List<JCheckBox> getTicked(List<JCheckBox> ticks)
 	{
 		List<JCheckBox> tickedTicks = new ArrayList<>();
 		for(int j = 0; j < ticks.size(); j++)
@@ -168,5 +215,38 @@ public class Logic
 			}
 		}
 		return tickedTicks;
+	}
+
+	public static void toggleSelect(JButton togSel) {
+		togSel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				for(JCheckBox tick : ticks)
+				{
+					if(tick.isSelected())
+						tick.setSelected(false);
+					else
+						tick.setSelected(true);
+				}
+			}
+		});
+	}
+
+	public static void selectMethod(JToggleButton numGroups, JLabel lblStudentsPerGroup) {
+		numGroups.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				if(numGroups.isSelected())
+				{
+					numGroups.setText("Select based on number of groups.");
+					lblStudentsPerGroup.setText("groups");
+				}
+				else
+				{
+					numGroups.setText("Select based on students per group.");
+					lblStudentsPerGroup.setText("students per group");
+				}
+			}
+		});
 	}
 }
