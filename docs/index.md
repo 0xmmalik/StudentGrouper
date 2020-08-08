@@ -2,7 +2,7 @@
 
 **Welcome to StudentGrouper!**
 
-**[About](#about) | [Installation](#installation) | [Contributing](#contributing) | [Version History](#version-history) | [Bug Report](https://github.com/0xmmalik/StudentGrouper/issues/new?assignees=&labels=bug&template=bug_report.md&title=) | [Feature Request](https://github.com/0xmmalik/StudentGrouper/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=)**
+[About](#about) | [Installation](#installation) | [Contributing](#contributing) | [Version History](#version-history) | [Bug Report](https://github.com/0xmmalik/StudentGrouper/issues/new?assignees=&labels=bug&template=bug_report.md&title=) | [Feature Request](https://github.com/0xmmalik/StudentGrouper/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=)
 
 ### About
 StudentGrouper is an application that allows teachers to manage random groupings of students. It provides a minimal and easy-to-use interface to create a pain-free grouping experience!
