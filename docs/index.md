@@ -35,3 +35,4 @@ To contribute on StudentGrouper, [fork](https://docs.github.com/en/github/gettin
 #### Version 2.0 -- May 27, 2020
 - Slightly updated GUI.
 - Full-release version of preview (v1.9).
+(as of now, only Version 1.9 has a `.jar` file; use Versions 2.0+ for development only)
